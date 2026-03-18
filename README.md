@@ -1,18 +1,20 @@
-# 🔔 编钟体感演奏器
+# 🔔 智韵编钟 · 体感演奏器
 
-> 用手掌在摄像头前"敲击"弧形排列的虚拟编钟，触发对应的古风音调。
+> 用手掌在摄像头前"敲击"虚拟编钟，触发真实的古风音调。MediaPipe 手势识别 + 实时音效 + 真实编钟图像。
 
-![Python](https://img.shields.io/badge/Python-3.9+-blue) ![MediaPipe](https://img.shields.io/badge/MediaPipe-Hands-green) ![OpenCV](https://img.shields.io/badge/OpenCV-4.x-red)
+![Python](https://img.shields.io/badge/Python-3.9~3.13-blue) ![MediaPipe](https://img.shields.io/badge/MediaPipe-Hands-green) ![OpenCV](https://img.shields.io/badge/OpenCV-4.x-red) ![Pygame](https://img.shields.io/badge/Pygame-Mixer-orange)
 
 ---
 
-## 🎬 效果预览
+## 🎬 功能特色
 
-- 打开程序后，摄像头实时捕捉手部动作
-- 画面中显示 **8 个弧形排列的编钟**，对应 C 大调五声音阶（宫商角徵羽）
-- 用任意手指**伸向并触碰**编钟，触发对应音调
-- 触碰时钟体**变亮 + 光晕发光**，视觉反馈清晰
-- 支持**双手同时演奏**
+- 📷 摄像头实时捕捉手部动作，支持**双手同时演奏**
+- 🔔 使用真实编钟图片资源，8个钟顶部横排显示，按音调有大小差异
+- 🎵 触碰编钟时钟体**变亮发光**，同步触发对应音调
+- 🖼️ 左上角 Logo 展示，右下角中文提示（PIL 渲染，无乱码）
+- 📦 提供打包好的 `bianchong.exe`，**双击即用，无需安装 Python**
+
+---
 
 ## 🎵 音阶对照
 
@@ -31,25 +33,40 @@
 
 ## 🚀 快速开始
 
-### 环境要求
+### 方式一：直接运行（推荐 Windows）
 
-- Python 3.9 ~ 3.13（**注意：Python 3.14 暂不支持 pygame，请用 3.9-3.13**）
-- 摄像头（USB 或内置均可）
-- Windows / macOS / Linux
+双击 `启动编钟.bat` 或直接运行 `bianchong.exe`，无需安装任何依赖。
 
-### 安装依赖
+> ⚠️ 首次启动可能被 Windows 安全提示拦截，点击"仍要运行"即可。
+
+### 方式二：Python 源码运行
+
+**环境要求：** Python 3.9 ~ 3.13（不支持 3.14）、摄像头
 
 ```bash
+git clone https://github.com/leonmangsos/bianchong.git
+cd bianchong
 pip install -r requirements.txt
-```
-
-### 运行
-
-```bash
 python bianchong.py
 ```
 
 按 **Q** 或 **ESC** 退出。
+
+---
+
+## 📁 项目结构
+
+```
+bianchong/
+├── bianchong.py          # 主程序
+├── process_bg.py         # 背景处理工具
+├── bianchong.spec        # PyInstaller 打包配置
+├── requirements.txt      # Python 依赖
+├── 启动编钟.bat           # Windows 一键启动脚本
+├── bell_transparent.png  # 编钟图片素材（透明背景）
+├── logo.png              # Logo 图片
+└── README.md
+```
 
 ---
 
@@ -59,29 +76,9 @@ python bianchong.py
 |------|------|
 | `mediapipe` | 手部 21 关键点实时识别 |
 | `opencv-python` | 摄像头采集 + 画面渲染 |
-| `sounddevice` | 实时音频输出 |
-| `scipy / numpy` | 合成钟声音色（基频 + 泛音 + 衰减） |
-
-### 音色合成原理
-
-```
-基频 × 1.0
-+ 2.76次谐波 × 0.5   ← 金属钟声失谐特征
-+ 5.4次谐波  × 0.25
-+ 8.93次谐波 × 0.1
-× 指数衰减 envelope（快攻慢衰）
-```
-
----
-
-## 📁 项目结构
-
-```
-bianchong/
-├── bianchong.py      # 主程序
-├── requirements.txt  # 依赖列表
-└── README.md
-```
+| `pygame.mixer` | 实时音频预加载 + 播放 |
+| `Pillow` | 中文文字渲染（无乱码） |
+| `numpy` | 合成钟声波形（基频+泛音+衰减） |
 
 ---
 
@@ -97,8 +94,8 @@ bianchong/
 ## 💡 扩展思路
 
 - [ ] 加入录制功能，保存演奏片段
-- [ ] 支持自定义音阶（如古琴调、编磬调）
-- [ ] 添加演奏模式（跟谱练习）
+- [ ] 支持自定义音阶（古琴调、编磬调）
+- [ ] 添加跟谱练习模式
 - [ ] 接入更多打击乐器（磬、鼓、木鱼）
 
 ---
